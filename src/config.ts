@@ -1,0 +1,4 @@
+export const TOKEN_COSTS = {
+    INPUT_PER_MILLION_USD: 0.15,
+    OUTPUT_PER_MILLION_USD: 0.60,
+};

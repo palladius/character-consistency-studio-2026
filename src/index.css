@@ -1,0 +1,79 @@
+:root {
+  font-family: 'Google Sans Text', system-ui, -apple-system, sans-serif;
+  color-scheme: dark;
+  background-color: #0f172a; /* slate-900 */
+  color: #f8fafc; /* slate-50 */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Basic utility classes to mock Tailwind since this project seems to rely on some CSS instead of actual Tailwind */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.grid { display: grid; }
+.gap-4 { gap: 1rem; }
+.p-4 { padding: 1rem; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+.bg-slate-900 { background-color: #0f172a; }
+.bg-slate-800 { background-color: #1e293b; }
+.text-slate-50 { color: #f8fafc; }
+.text-slate-300 { color: #cbd5e1; }
+.text-yellow-400 { color: #facc15; }
+.rounded { border-radius: 0.25rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
+.cursor-pointer { cursor: pointer; }
+.font-bold { font-weight: 700; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+
+/* Component Specific Styles for ApiKeyInput */
+.api-key-input {
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+.api-key-input h3 { margin-top: 0; color: #facc15; }
+.api-key-input a { color: #60a5fa; text-decoration: none; }
+.api-key-input a:hover { text-decoration: underline; }
+.dark-input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: white;
+  border-radius: 0.25rem;
+}
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+.btn.primary { background-color: #facc15; color: #0f172a; }
+.btn.secondary { background-color: #334155; color: white; }
+.btn.danger { background-color: #ef4444; color: white; }
+.status-success { color: #4ade80; display: block; margin-top: 0.5rem; }
+.status-error { color: #ef4444; display: block; margin-top: 0.5rem; }
