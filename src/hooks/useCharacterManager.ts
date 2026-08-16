@@ -19,16 +19,18 @@ export const useCharacterManager = () => {
   const [characters, setCharacters] = useState<Character[]>(initialCharacters);
   const [selectedCharacterId, setSelectedCharacterId] = useState<string | null>(null);
 
-  const addCharacter = useCallback((name: string) => {
+  const addCharacter = useCallback((name: string): string | undefined => {
     if (!name.trim()) return;
+    const id = `char_${Date.now()}`;
     const newCharacter: Character = {
-      id: `char_${Date.now()}`,
+      id,
       name,
       referenceImages: [],
       generatedImages: [],
     };
     setCharacters(prev => [...prev, newCharacter]);
     setSelectedCharacterId(newCharacter.id);
+    return id;
   }, []);
 
   const deleteCharacter = useCallback((id: string) => {
@@ -58,6 +60,12 @@ export const useCharacterManager = () => {
   const deleteReferenceImage = useCallback((characterId: string, imageId: string) => {
     setCharacters(prev => prev.map(c => 
       c.id === characterId ? { ...c, referenceImages: c.referenceImages.filter(img => img.id !== imageId) } : c
+    ));
+  }, []);
+
+  const addPreloadedImages = useCallback((characterId: string, images: { id: string; dataUrl: string; fileName?: string }[]) => {
+    setCharacters(prev => prev.map(c => 
+      c.id === characterId ? { ...c, referenceImages: [...c.referenceImages, ...images] } : c
     ));
   }, []);
 
@@ -92,6 +100,7 @@ export const useCharacterManager = () => {
     deleteCharacter,
     setSelectedCharacterId,
     addReferenceImages,
+    addPreloadedImages,
     deleteReferenceImage,
     addGeneratedImage,
     deleteGeneratedImage,

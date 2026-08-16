@@ -1,6 +1,7 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { Image } from '@/types';
 
+let currentApiKey: string | null = null;
 let ai: GoogleGenAI | null = null;
 
 export const getApiKey = (): string | null => {
@@ -17,11 +18,12 @@ export const isApiKeyConfigured = (): boolean => {
 };
 
 const getAI = () => {
-    if (!ai) {
-        const apiKey = getApiKey();
-        if (!apiKey) {
-            throw new Error("API key not configured.");
-        }
+    const apiKey = getApiKey();
+    if (!apiKey) {
+        throw new Error('API key not configured. Please add your Gemini API key in Settings.');
+    }
+    if (!ai || currentApiKey !== apiKey) {
+        currentApiKey = apiKey;
         ai = new GoogleGenAI({ apiKey });
     }
     return ai;

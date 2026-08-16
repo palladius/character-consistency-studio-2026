@@ -11,6 +11,9 @@ import Loader from '@/components/Loader';
 import Footer from '@/components/Footer';
 import AboutPage from '@/components/AboutPage';
 import DocsPage from '@/components/DocsPage';
+import { ApiKeyInput } from '@/components/ApiKeyInput';
+import { isApiKeyConfigured } from '@/services/geminiService';
+import { usePreload } from '@/hooks/usePreload';
 const aspectRatios = [
     { value: '1:1', icon: ICONS.aspect1to1, label: 'Square (1:1)' },
     { value: '4:3', icon: ICONS.aspect4to3, label: 'Landscape (4:3)' },
@@ -142,6 +145,7 @@ function App() {
     deleteCharacter,
     setSelectedCharacterId,
     addReferenceImages,
+    addPreloadedImages,
     deleteReferenceImage,
     addGeneratedImage,
     deleteGeneratedImage,
@@ -150,6 +154,14 @@ function App() {
   const [modalImage, setModalImage] = useState<GeneratedImage | null>(null);
   const [showStandaloneGenerator, setShowStandaloneGenerator] = useState(false);
   const [view, setView] = useState<View>('workspace');
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(isApiKeyConfigured());
+
+  usePreload(addCharacter, addPreloadedImages, characters);
+
+  const handleApiKeyChange = () => {
+    setHasApiKey(isApiKeyConfigured());
+  };
   
   const characterForModal = modalImage ? characters.find(c => c.id === modalImage.characterId) : null;
   const allGeneratedImagesForChar = characterForModal ? characterForModal.generatedImages : [];
@@ -236,6 +248,8 @@ function App() {
                       totalTokens={usageStats.totalTokens}
                       estimatedCost={usageStats.estimatedCost}
                       onSetView={setView}
+                      hasApiKey={hasApiKey}
+                      onOpenApiKeySettings={() => setShowApiKeyModal(true)}
                     />
                 </div>
                 {/* Workspace Container */}
@@ -248,7 +262,8 @@ function App() {
                     <div className="absolute bottom-4 right-6 z-20">
                         <button 
                             onClick={() => setShowStandaloneGenerator(true)}
-                            className="bg-slate-800/50 hover:bg-slate-700/70 backdrop-blur-sm text-slate-200 font-semibold py-2 px-4 rounded-lg border border-slate-700 transition-colors flex items-center gap-2"
+                            disabled={!hasApiKey}
+                            className={`bg-slate-800/50 hover:bg-slate-700/70 backdrop-blur-sm text-slate-200 font-semibold py-2 px-4 rounded-lg border border-slate-700 transition-colors flex items-center gap-2 ${!hasApiKey ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {ICONS.image} Quick Generate
                         </button>
@@ -261,6 +276,7 @@ function App() {
                       onDeleteGeneratedImage={deleteGeneratedImage}
                       onImageClick={(image) => setModalImage(image)}
                       onBack={() => setSelectedCharacterId(null)}
+                      hasApiKey={hasApiKey}
                     />
                 </div>
             </div>
@@ -287,6 +303,18 @@ function App() {
           onSelectImage={setModalImage}
           characterReferenceImages={characterForModal?.referenceImages}
         />
+      )}
+
+      {showApiKeyModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setShowApiKeyModal(false)}>
+          <div className="bg-slate-800 rounded-lg shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">API Key Settings</h2>
+              <button onClick={() => setShowApiKeyModal(false)} className="p-1 text-slate-400 hover:text-white">{ICONS.close}</button>
+            </div>
+            <ApiKeyInput onKeyChange={handleApiKeyChange} />
+          </div>
+        </div>
       )}
 
       {showStandaloneGenerator && (

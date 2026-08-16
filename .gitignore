@@ -48,3 +48,4 @@ out/
 # =========================
 # NOTE: Do NOT ignore conductor/ -- it contains SDD artifacts
 # =========================
+public/preloaded/

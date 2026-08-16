@@ -14,9 +14,11 @@ interface SidebarProps {
   totalTokens: number;
   estimatedCost: number;
   onSetView: (view: View) => void;
+  hasApiKey?: boolean;
+  onOpenApiKeySettings?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ characters, selectedCharacterId, onSelectCharacter, onAddCharacter, onDeleteCharacter, totalImages, totalTokens, estimatedCost, onSetView }) => {
+const Sidebar: React.FC<SidebarProps> = ({ characters, selectedCharacterId, onSelectCharacter, onAddCharacter, onDeleteCharacter, totalImages, totalTokens, estimatedCost, onSetView, hasApiKey, onOpenApiKeySettings }) => {
   const [newCharName, setNewCharName] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [appVersion, setAppVersion] = useState('');
@@ -59,6 +61,9 @@ const Sidebar: React.FC<SidebarProps> = ({ characters, selectedCharacterId, onSe
           </h1>
         </div>
         <div className="flex items-center gap-2">
+            <button onClick={onOpenApiKeySettings} className="flex items-center gap-1 text-sm px-2 py-1 rounded bg-slate-700 hover:bg-slate-600">
+              {hasApiKey ? '🟢 API Key' : '🔴 No API Key'}
+            </button>
             <button onClick={() => onSetView('about')} title="About this App" className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-colors">
               <div className="w-5 h-5">{ICONS.info}</div>
             </button>

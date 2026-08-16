@@ -116,7 +116,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ image, characterName, onClose, 
         parentId: image.id,
         requestedAspectRatio: image.requestedAspectRatio,
       };
-      onImageUpdate(newImage.characterId, newImage.prompt, newImage.dataUrl, newImage.id, usageMetadata, newImage.requestedAspectRatio);
+      onImageUpdate(newImage.characterId, newImage.prompt, newImage.dataUrl, image.id, usageMetadata, newImage.requestedAspectRatio);
       setEditPrompt('');
       onSelectImage(newImage);
     } catch (err) {
@@ -139,7 +139,7 @@ const ImageModal: React.FC<ImageModalProps> = ({ image, characterName, onClose, 
             parentId: image.id,
             requestedAspectRatio: image.requestedAspectRatio,
         };
-        onImageUpdate(newImage.characterId, newImage.prompt, newImage.dataUrl, newImage.id, usageMetadata, newImage.requestedAspectRatio);
+        onImageUpdate(newImage.characterId, newImage.prompt, newImage.dataUrl, image.id, usageMetadata, newImage.requestedAspectRatio);
         onSelectImage(newImage);
     } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to enhance image');

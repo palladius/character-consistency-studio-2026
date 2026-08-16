@@ -15,6 +15,7 @@ interface WorkspaceProps {
   onDeleteGeneratedImage: (characterId: string, imageId: string) => void;
   onImageClick: (image: GeneratedImage) => void;
   onBack: () => void;
+  hasApiKey?: boolean;
 }
 
 const aspectRatios = [
@@ -33,6 +34,7 @@ const Workspace: React.FC<WorkspaceProps> = ({
   onDeleteGeneratedImage,
   onImageClick,
   onBack,
+  hasApiKey = false,
 }) => {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -182,8 +184,8 @@ const Workspace: React.FC<WorkspaceProps> = ({
         </div>
         <button
           onClick={() => handleGenerate(prompt)}
-          disabled={isLoading}
-          className="bg-yellow-500 hover:bg-yellow-600 disabled:bg-slate-600 text-slate-900 font-bold py-3 px-6 rounded-md transition-colors flex items-center justify-center gap-2"
+          disabled={isLoading || !hasApiKey}
+          className={`bg-yellow-500 hover:bg-yellow-600 disabled:bg-slate-600 text-slate-900 font-bold py-3 px-6 rounded-md transition-colors flex items-center justify-center gap-2 ${!hasApiKey ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           {isLoading ? 'Generating...' : <>{ICONS.sparkles}<span>Generate</span></>}
         </button>
@@ -213,6 +215,13 @@ const Workspace: React.FC<WorkspaceProps> = ({
             <h2 className="text-3xl font-bold text-white">{isQuickGenWorkspace ? character.name : `Editing: ${character.name}`}</h2>
         </div>
       </div>
+      
+      {!hasApiKey && (
+        <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg relative mb-6" role="alert">
+          <strong className="font-bold">Missing API Key: </strong>
+          <span className="block sm:inline">Configure your Gemini API key to start generating images</span>
+        </div>
+      )}
       
       {!isQuickGenWorkspace && !isReadyToGenerate && (
         <div className="bg-yellow-900/50 border border-yellow-700 text-yellow-200 px-4 py-3 rounded-lg relative mb-6" role="alert">
