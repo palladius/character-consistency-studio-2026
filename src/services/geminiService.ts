@@ -59,7 +59,7 @@ export const generateWithCharacter = async (prompt: string, referenceImages: Ima
     }
 
     const response = await gemini.models.generateContent({
-        model: 'gemini-2.5-flash-image',
+        model: 'gemini-2.5-flash-preview-05-20',
         contents: {
             parts: [
                 ...imageParts,
@@ -90,7 +90,7 @@ export const editImage = async (prompt: string, baseImage: Image): Promise<{ dat
     const gemini = getAI();
 
     const response = await gemini.models.generateContent({
-        model: 'gemini-2.5-flash-image',
+        model: 'gemini-2.5-flash-preview-05-20',
         contents: {
             parts: [
                 {
@@ -130,24 +130,56 @@ export const enhanceImage = async (baseImage: Image): Promise<{ dataUrl: string;
 
 export const generateImage = async (prompt: string, aspectRatio: string, numberOfImages: number): Promise<{ dataUrl: string; usageMetadata?: any; requestedAspectRatio: string; }[]> => {
     const gemini = getAI();
-    
-    const response = await gemini.models.generateImages({
-        model: 'imagen-4.0-generate-001',
-        prompt: prompt,
-        config: {
-            numberOfImages: numberOfImages,
-            outputMimeType: 'image/png',
-            aspectRatio: aspectRatio,
-        },
-    });
 
-    if (response.generatedImages && response.generatedImages.length > 0) {
-        return response.generatedImages.map(img => ({
-             dataUrl: `data:image/png;base64,${img.image?.imageBytes || ''}`,
-             usageMetadata: undefined, // Imagen API doesn't provide token usage
-             requestedAspectRatio: aspectRatio,
-        }));
+    // Try Imagen 4.0 first (faster, higher quality, but may not be available for all API keys)
+    try {
+        const response = await gemini.models.generateImages({
+            model: 'imagen-4.0-generate-001',
+            prompt: prompt,
+            config: {
+                numberOfImages: numberOfImages,
+                outputMimeType: 'image/png',
+                aspectRatio: aspectRatio,
+            },
+        });
+
+        if (response.generatedImages && response.generatedImages.length > 0) {
+            return response.generatedImages.map(img => ({
+                dataUrl: `data:image/png;base64,${img.image?.imageBytes || ''}`,
+                usageMetadata: undefined,
+                requestedAspectRatio: aspectRatio,
+            }));
+        }
+    } catch (imagenError) {
+        console.warn('Imagen 4.0 not available, falling back to Gemini Flash Image:', imagenError);
     }
-    
-    throw new Error("No image generated with imagen-4.0");
+
+    // Fallback: use Gemini Flash Image (generateContent with IMAGE modality)
+    // This works with any Gemini API key
+    const results: { dataUrl: string; usageMetadata?: any; requestedAspectRatio: string; }[] = [];
+
+    for (let i = 0; i < numberOfImages; i++) {
+        const response = await gemini.models.generateContent({
+            model: 'gemini-2.5-flash-preview-05-20',
+            contents: {
+                parts: [{ text: `Generate a high quality image: ${prompt}. Aspect ratio: ${aspectRatio}.` }],
+            },
+            config: {
+                responseModalities: [Modality.IMAGE],
+            },
+        });
+
+        const imagePart = response.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+        if (imagePart?.inlineData) {
+            const base64ImageBytes: string = imagePart.inlineData.data || '';
+            const dataUrl = `data:${imagePart.inlineData.mimeType};base64,${base64ImageBytes}`;
+            results.push({ dataUrl, usageMetadata: response.usageMetadata, requestedAspectRatio: aspectRatio });
+        }
+    }
+
+    if (results.length > 0) {
+        return results;
+    }
+
+    throw new Error("Image generation failed with both Imagen 4.0 and Gemini Flash Image. Please check your API key permissions.");
 };

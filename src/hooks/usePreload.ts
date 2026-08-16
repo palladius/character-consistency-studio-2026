@@ -25,8 +25,9 @@ export const usePreload = (
   characters: Array<{ id: string }>
 ) => {
   useEffect(() => {
-    // Only preload if no characters exist yet (besides Quick Gen)
-    const userChars = characters.filter(c => !c.id.startsWith('quick'));
+    // Only preload if no user-created characters exist yet (besides the built-in Quick Gen)
+    const QUICK_GEN_ID = 'QUICK_GEN_CHARACTER';
+    const userChars = characters.filter(c => c.id !== QUICK_GEN_ID);
     if (userChars.length > 0) return;
 
     const loadPreloaded = async () => {

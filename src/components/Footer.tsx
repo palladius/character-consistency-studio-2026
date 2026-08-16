@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ onSetView }) => {
             {appVersion && <span className="text-slate-700">|</span>}
 
             <a 
-                href="https://github.com/palladius/character-consistency-studio" 
+                href="https://github.com/palladius/character-consistency-studio-2026" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 transition-colors font-medium"
@@ -34,7 +34,7 @@ const Footer: React.FC<FooterProps> = ({ onSetView }) => {
             </a>
             <span className="text-slate-700">|</span>
             <span>
-                Developed with love with AI Studio build 💛
+                Character Consistency Studio 2026 💛
             </span>
         </footer>
     );
