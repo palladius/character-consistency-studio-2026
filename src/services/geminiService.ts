@@ -1,5 +1,6 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { Image } from '@/types';
+import { MODELS } from '@/config';
 
 let currentApiKey: string | null = null;
 let ai: GoogleGenAI | null = null;
@@ -59,7 +60,7 @@ export const generateWithCharacter = async (prompt: string, referenceImages: Ima
     }
 
     const response = await gemini.models.generateContent({
-        model: 'gemini-2.5-flash-preview-05-20',
+        model: MODELS.IMAGE_GENERATION,
         contents: {
             parts: [
                 ...imageParts,
@@ -90,7 +91,7 @@ export const editImage = async (prompt: string, baseImage: Image): Promise<{ dat
     const gemini = getAI();
 
     const response = await gemini.models.generateContent({
-        model: 'gemini-2.5-flash-preview-05-20',
+        model: MODELS.IMAGE_GENERATION,
         contents: {
             parts: [
                 {
@@ -134,7 +135,7 @@ export const generateImage = async (prompt: string, aspectRatio: string, numberO
     // Try Imagen 4.0 first (faster, higher quality, but may not be available for all API keys)
     try {
         const response = await gemini.models.generateImages({
-            model: 'imagen-4.0-generate-001',
+            model: MODELS.IMAGEN,
             prompt: prompt,
             config: {
                 numberOfImages: numberOfImages,
@@ -160,7 +161,7 @@ export const generateImage = async (prompt: string, aspectRatio: string, numberO
 
     for (let i = 0; i < numberOfImages; i++) {
         const response = await gemini.models.generateContent({
-            model: 'gemini-2.5-flash-preview-05-20',
+            model: MODELS.IMAGE_GENERATION,
             contents: {
                 parts: [{ text: `Generate a high quality image: ${prompt}. Aspect ratio: ${aspectRatio}.` }],
             },

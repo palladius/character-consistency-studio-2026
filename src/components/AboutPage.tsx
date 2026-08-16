@@ -1,5 +1,6 @@
 import React from 'react';
 import { ICONS } from '@/constants';
+import { MODELS } from '@/config';
 
 interface AboutPageProps {
   onBack: () => void;
@@ -32,10 +33,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
 
             <h2 className="text-2xl font-semibold text-white pt-4">How It Works</h2>
             <p>
-              The core functionality relies on the multimodal capabilities of the <strong>Gemini 2.5 Flash Image</strong> (<code className="bg-slate-700 text-yellow-300 text-sm px-2 py-1 rounded-md">gemini-2.5-flash-image</code>) model. When you provide reference images and a text prompt, the model analyzes the visual information from the images and combines it with the instructions from your prompt to create a new image that respects the character's appearance.
+              The core functionality relies on the multimodal capabilities of <strong>Gemini Flash</strong> (<code className="bg-slate-700 text-yellow-300 text-sm px-2 py-1 rounded-md">{MODELS.IMAGE_GENERATION}</code>) model. When you provide reference images and a text prompt, the model analyzes the visual information from the images and combines it with the instructions from your prompt to create a new image that respects the character's appearance.
             </p>
             <p>
-              The "Quick Generate" feature uses the <strong>Imagen 4</strong> (<code className="bg-slate-700 text-yellow-300 text-sm px-2 py-1 rounded-md">imagen-4.0-generate-001</code>) model for high-quality, general-purpose image generation from a single text prompt.
+              The "Quick Generate" feature uses <strong>Imagen</strong> (<code className="bg-slate-700 text-yellow-300 text-sm px-2 py-1 rounded-md">{MODELS.IMAGEN}</code>) for high-quality, general-purpose image generation from a single text prompt, with automatic fallback to Gemini Flash if Imagen is unavailable.
             </p>
 
             <div className="!mt-10 p-4 border border-slate-700 bg-slate-800/50 rounded-lg text-base">

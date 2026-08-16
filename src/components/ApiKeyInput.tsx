@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { MODELS } from '@/config';
 
 interface ApiKeyInputProps {
   onKeyChange?: () => void;
@@ -40,7 +41,7 @@ export const ApiKeyInput: React.FC<ApiKeyInputProps> = ({ onKeyChange }) => {
     setStatus('loading');
     setStatusMessage('Testing...');
     try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODELS.TEST_CONNECTION}:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: "Hello" }] }] })

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View } from '@/App';
+import { APP } from '@/config';
 
 interface FooterProps {
     onSetView: (view: View) => void;
@@ -25,7 +26,7 @@ const Footer: React.FC<FooterProps> = ({ onSetView }) => {
             {appVersion && <span className="text-slate-700">|</span>}
 
             <a 
-                href="https://github.com/palladius/character-consistency-studio-2026" 
+                href={APP.REPO_URL} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="hover:text-yellow-400 transition-colors font-medium"
