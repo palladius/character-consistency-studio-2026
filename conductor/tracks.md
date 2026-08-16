@@ -6,3 +6,4 @@
 - [ ] [Track 4: CLI Eval Tools](./tracks/track-04-cli-eval/index.md) - Python eval scripts port
 - [ ] [Track 5: Preloaded Family Edition](./tracks/track-05-family/index.md) - Private deployment with family photos
 - [ ] [Track 6: Golden Eval Tests](./tracks/track-06-golden-tests/index.md) - Automated eval test suite
+- [ ] [Track 7: GCS Image Persistence](./tracks/track-07-gcs-persistence/index.md) - Optional GCS sidecar for image backup

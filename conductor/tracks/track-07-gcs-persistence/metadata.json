@@ -1,0 +1,9 @@
+{
+  "id": "track-07-gcs-persistence",
+  "type": "feature",
+  "status": "new",
+  "created": "2026-08-16T18:51:00Z",
+  "updated": "2026-08-16T18:51:00Z",
+  "title": "GCS Image Persistence",
+  "description": "Optional GCS sidecar for persisting generated images, reference photos, eval results, and metadata to Google Cloud Storage."
+}
