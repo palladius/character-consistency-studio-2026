@@ -1,0 +1,50 @@
+# =========================
+# Node.js
+# =========================
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# =========================
+# Private data (NEVER commit family photos!)
+# =========================
+private/
+.env
+!.env.dist
+
+# =========================
+# IDE
+# =========================
+.idea/
+.vscode/settings.json
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Build artifacts
+# =========================
+build/
+out/
+
+# =========================
+# Gemini agent state
+# =========================
+.gemini/
+
+# =========================
+# NOTE: Do NOT ignore conductor/ -- it contains SDD artifacts
+# =========================
