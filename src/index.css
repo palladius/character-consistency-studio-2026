@@ -1,14 +1,17 @@
+@import "tailwindcss";
+
+/* ===== Custom Theme ===== */
 :root {
   font-family: 'Google Sans Text', system-ui, -apple-system, sans-serif;
   color-scheme: dark;
-  background-color: #0f172a; /* slate-900 */
-  color: #f8fafc; /* slate-50 */
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  background-color: #0f172a;
+  color: #f8fafc;
 }
 
 #root {
@@ -17,48 +20,72 @@ body {
   flex-direction: column;
 }
 
-/* Basic utility classes to mock Tailwind since this project seems to rely on some CSS instead of actual Tailwind */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.justify-center { justify-content: center; }
-.grid { display: grid; }
-.gap-4 { gap: 1rem; }
-.p-4 { padding: 1rem; }
-.w-full { width: 100%; }
-.h-full { height: 100%; }
-.min-h-screen { min-height: 100vh; }
-.bg-slate-900 { background-color: #0f172a; }
-.bg-slate-800 { background-color: #1e293b; }
-.text-slate-50 { color: #f8fafc; }
-.text-slate-300 { color: #cbd5e1; }
-.text-yellow-400 { color: #facc15; }
-.rounded { border-radius: 0.25rem; }
-.rounded-lg { border-radius: 0.5rem; }
-.shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-.cursor-pointer { cursor: pointer; }
-.font-bold { font-weight: 700; }
-.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
 
-/* Component Specific Styles for ApiKeyInput */
+/* ===== Custom Animations ===== */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.4); }
+  50%      { box-shadow: 0 0 12px 4px rgba(250, 204, 21, 0.15); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ===== ApiKeyInput Component ===== */
 .api-key-input {
   background-color: #1e293b;
   padding: 1.5rem;
   border-radius: 0.5rem;
-  margin: 1rem 0;
 }
-.api-key-input h3 { margin-top: 0; color: #facc15; }
-.api-key-input a { color: #60a5fa; text-decoration: none; }
-.api-key-input a:hover { text-decoration: underline; }
+.api-key-input h3 {
+  margin-top: 0;
+  color: #facc15;
+  font-size: 1.125rem;
+}
+.api-key-input a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+.api-key-input a:hover {
+  text-decoration: underline;
+}
 .dark-input {
   width: 100%;
-  padding: 0.5rem;
-  margin: 1rem 0;
+  padding: 0.625rem 0.75rem;
+  margin: 0.75rem 0;
   background-color: #0f172a;
   border: 1px solid #334155;
-  color: white;
-  border-radius: 0.25rem;
+  color: #f8fafc;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-family: 'Google Sans Text', system-ui, sans-serif;
+  transition: border-color 0.2s;
+}
+.dark-input:focus {
+  outline: none;
+  border-color: #facc15;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.15);
 }
 .button-group {
   display: flex;
@@ -68,12 +95,101 @@ body {
 .btn {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.375rem;
   cursor: pointer;
   font-weight: 500;
+  font-size: 0.875rem;
+  font-family: 'Google Sans Text', system-ui, sans-serif;
+  transition: all 0.15s ease;
 }
-.btn.primary { background-color: #facc15; color: #0f172a; }
-.btn.secondary { background-color: #334155; color: white; }
-.btn.danger { background-color: #ef4444; color: white; }
-.status-success { color: #4ade80; display: block; margin-top: 0.5rem; }
-.status-error { color: #ef4444; display: block; margin-top: 0.5rem; }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn.primary {
+  background-color: #facc15;
+  color: #0f172a;
+}
+.btn.primary:hover:not(:disabled) {
+  background-color: #eab308;
+}
+.btn.secondary {
+  background-color: #334155;
+  color: #f8fafc;
+}
+.btn.secondary:hover:not(:disabled) {
+  background-color: #475569;
+}
+.btn.danger {
+  background-color: #dc2626;
+  color: white;
+}
+.btn.danger:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+.status-success {
+  color: #4ade80;
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+.status-error {
+  color: #f87171;
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* ===== Markdown Docs Styles ===== */
+.markdown-body {
+  color: #cbd5e1;
+  line-height: 1.75;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  color: #f8fafc;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}
+.markdown-body h1 { font-size: 1.875rem; border-bottom: 1px solid #334155; padding-bottom: 0.5rem; }
+.markdown-body h2 { font-size: 1.5rem; }
+.markdown-body h3 { font-size: 1.25rem; }
+.markdown-body a { color: #60a5fa; }
+.markdown-body code {
+  background: #1e293b;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  color: #fbbf24;
+}
+.markdown-body pre {
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+.markdown-body pre code {
+  background: none;
+  padding: 0;
+}
+.markdown-body blockquote {
+  border-left: 3px solid #facc15;
+  margin-left: 0;
+  padding-left: 1rem;
+  color: #94a3b8;
+}
+.markdown-body ul, .markdown-body ol {
+  padding-left: 1.5rem;
+}
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.markdown-body th, .markdown-body td {
+  border: 1px solid #334155;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.markdown-body th {
+  background: #1e293b;
+  color: #f8fafc;
+}
