@@ -18,6 +18,16 @@ export const MODELS = {
   TEST_CONNECTION: 'gemini-2.0-flash',
 } as const;
 
+/** Known-working models for image generation (autocomplete suggestions). First = default. */
+export const KNOWN_IMAGE_MODELS = [
+  { id: 'gemini-2.5-flash-preview-05-20', label: 'Gemini 2.5 Flash (default)', description: 'Fast, good quality. Best balance of speed and consistency.' },
+  { id: 'gemini-2.5-pro-preview-05-20', label: 'Gemini 2.5 Pro', description: 'Higher quality, slower. Best for important generations.' },
+  { id: 'gemini-2.0-flash-exp', label: 'Gemini 2.0 Flash Exp', description: 'Experimental. Try if 2.5 is unavailable.' },
+] as const;
+
+/** localStorage key for user-selected model */
+export const LS_SELECTED_MODEL = 'ccs_selected_model';
+
 // =============================================================================
 // Cost Configuration
 // =============================================================================

@@ -1,6 +1,15 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 import { Image } from '@/types';
-import { MODELS } from '@/config';
+import { MODELS, LS_SELECTED_MODEL } from '@/config';
+
+/** Returns the user-selected image generation model, or the config default. */
+export const getSelectedModel = (): string => {
+    if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem(LS_SELECTED_MODEL);
+        if (stored && stored.trim()) return stored.trim();
+    }
+    return MODELS.IMAGE_GENERATION;
+};
 
 let currentApiKey: string | null = null;
 let ai: GoogleGenAI | null = null;
@@ -60,7 +69,7 @@ export const generateWithCharacter = async (prompt: string, referenceImages: Ima
     }
 
     const response = await gemini.models.generateContent({
-        model: MODELS.IMAGE_GENERATION,
+        model: getSelectedModel(),
         contents: {
             parts: [
                 ...imageParts,
@@ -91,7 +100,7 @@ export const editImage = async (prompt: string, baseImage: Image): Promise<{ dat
     const gemini = getAI();
 
     const response = await gemini.models.generateContent({
-        model: MODELS.IMAGE_GENERATION,
+        model: getSelectedModel(),
         contents: {
             parts: [
                 {
@@ -161,7 +170,7 @@ export const generateImage = async (prompt: string, aspectRatio: string, numberO
 
     for (let i = 0; i < numberOfImages; i++) {
         const response = await gemini.models.generateContent({
-            model: MODELS.IMAGE_GENERATION,
+            model: getSelectedModel(),
             contents: {
                 parts: [{ text: `Generate a high quality image: ${prompt}. Aspect ratio: ${aspectRatio}.` }],
             },
